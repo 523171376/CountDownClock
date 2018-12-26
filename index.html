@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script>
+		
+		var CountDownClock = new function(){
+			var targetDate,tarTime;
+			var chars = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'];
+			var baseTime = new Date("1970/01/01 00:00:01").getTime();
+			var getNowInvock = function(){
+				var now = arguments[0] && new Date(arguments[0]) ||  new Date();
+				return (now.getFullYear()-1970) + " 年 " + chars[now.getMonth()] +" 月 " + chars[now.getDate()-1] + " 天  "+chars[now.getHours()] + " 小时 " + chars[now.getMinutes()] + " 分钟 " + chars[now.getSeconds()] +" 秒";
+			}
+			var callback,finish;
+			var doing = function(){
+				var timerInvock = setInterval(function(){
+					var now = tarTime - Date.now() + baseTime;
+					callback.call(callback.this,now);
+					if(now<=baseTime){
+						clearInterval(timerInvock);
+						finish.call();
+					}
+				},1000);
+			}
+			return {
+				init: function(params){
+					targetDate = new Date(params.time);
+					tarTime = targetDate.getTime();
+					callback = params.callback;
+					finish = params.finish;
+					return this;
+				},
+				start: function(){
+					doing();
+				},
+				getTime: function(){
+					return getNowInvock(arguments[0]);
+				}
+			};
+		}();
+		
+		
+		var mytime = '2018/12/26 11:51:01';
+		console.log("---- 开始 ----");
+		console.log('---- 目标时间: '+ mytime +'----');
+		CountDownClock.init({
+			time: mytime,
+			callback: function(time){
+				console.log('##还有##  '+CountDownClock.getTime(time));
+			},
+			finish: function(){
+				console.log('倒计时结束');
+			}
+		}).start();	
+		
+		
+		
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

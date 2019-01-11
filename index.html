@@ -13,11 +13,11 @@
 				var now = arguments[0] && new Date(arguments[0]) ||  new Date();
 				return (now.getFullYear()-1970) + " 年 " + chars[now.getMonth()] +" 月 " + chars[now.getDate()-1] + " 天  "+chars[now.getHours()] + " 小时 " + chars[now.getMinutes()] + " 分钟 " + chars[now.getSeconds()] +" 秒";
 			}
-			var callback,finish;
+			var loop,finish;
 			var doing = function(){
 				var timerInvock = setInterval(function(){
 					var now = tarTime - Date.now() + baseTime;
-					callback.call(callback.this,now);
+					loop.call(loop.this,now);
 					if(now<=baseTime){
 						clearInterval(timerInvock);
 						finish.call();
@@ -28,7 +28,7 @@
 				init: function(params){
 					targetDate = new Date(params.time);
 					tarTime = targetDate.getTime();
-					callback = params.callback;
+					loop = params.loop;
 					finish = params.finish;
 					params.__proto__.formatTime = this.getTime;
 					return this;
@@ -48,7 +48,7 @@
 		console.log('---- 目标时间: '+ mytime +'----');
 		CountDownClock.init({
 			time: mytime,
-			callback: function(time){
+			loop: function(time){
 				//console.log('##还有##  '+CountDownClock.getTime(time));
 				console.log('##还有##  '+this.formatTime(time));
 			},

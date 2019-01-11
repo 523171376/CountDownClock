@@ -30,6 +30,7 @@
 					tarTime = targetDate.getTime();
 					callback = params.callback;
 					finish = params.finish;
+					params.__proto__.formatTime = this.getTime;
 					return this;
 				},
 				start: function(){
@@ -42,13 +43,14 @@
 		}();
 		
 		
-		var mytime = '2018/12/26 11:51:01';
+		var mytime = '2020/12/26 11:51:01';
 		console.log("---- 开始 ----");
 		console.log('---- 目标时间: '+ mytime +'----');
 		CountDownClock.init({
 			time: mytime,
 			callback: function(time){
-				console.log('##还有##  '+CountDownClock.getTime(time));
+				//console.log('##还有##  '+CountDownClock.getTime(time));
+				console.log('##还有##  '+this.formatTime(time));
 			},
 			finish: function(){
 				console.log('倒计时结束');

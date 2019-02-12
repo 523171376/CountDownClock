@@ -3,64 +3,83 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
+		<style type="text/css">
+			.box-container{
+				width: 500px;
+				height: 200px;
+				margin: 0 auto;
+				border: 3px solid #E2E2E2;
+				border-radius: 3px;
+			}
+		</style>
+		
 		<script>
-		
-		var CountDownClock = new function(){
-			var targetDate,tarTime;
-			var chars = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'];
-			var baseTime = new Date("1970/01/01 00:00:01").getTime();
-			var getNowInvock = function(){
-				var now = arguments[0] && new Date(arguments[0]) ||  new Date();
-				return (now.getFullYear()-1970) + " 年 " + chars[now.getMonth()] +" 月 " + chars[now.getDate()-1] + " 天  "+chars[now.getHours()] + " 小时 " + chars[now.getMinutes()] + " 分钟 " + chars[now.getSeconds()] +" 秒";
-			}
-			var loop,finish;
-			var doing = function(){
-				var timerInvock = setInterval(function(){
-					var now = tarTime - Date.now() + baseTime;
-					loop.call(loop.this,now);
-					if(now<=baseTime){
-						clearInterval(timerInvock);
-						finish.call();
-					}
-				},1000);
-			}
-			return {
-				init: function(params){
-					targetDate = new Date(params.time);
-					tarTime = targetDate.getTime();
-					loop = params.loop;
-					finish = params.finish;
-					params.__proto__.formatTime = this.getTime;
-					return this;
-				},
-				start: function(){
-					doing();
-				},
-				getTime: function(){
-					return getNowInvock(arguments[0]);
+			var CountDownClock = new function(){
+				var targetDate,tarTime;
+				var chars = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'];
+				//var baseTime = new Date("1970/01/01 00:00:01").getTime();
+				var baseTime = -28799000;
+				
+				var getNowInvock = function(){
+					var now = arguments[0] && new Date(arguments[0]) ||  new Date();
+					return (now.getFullYear()-1970) + " 年 " + chars[now.getMonth()] +" 月 " + chars[now.getDate()-1] + " 天  "+chars[now.getHours()] + " 小时 " + chars[now.getMinutes()] + " 分钟 " + chars[now.getSeconds()] +" 秒";
 				}
-			};
-		}();
+				var loop,finish;
+				var doing = function(){
+					var timerInvock = setInterval(function(){
+						var now = tarTime - Date.now() + baseTime;
+						loop.call(loop.this,now);
+						if(now<=baseTime){
+							clearInterval(timerInvock);
+							finish.call();
+						}
+					},1000);
+				}
+				return {
+					init: function(params){
+						targetDate = new Date(params.time);
+						tarTime = targetDate.getTime();
+						loop = params.loop;
+						finish = params.finish;
+						params.__proto__.formatTime = this.getTime;
+						return this;
+					},
+					start: function(){
+						doing();
+					},
+					getTime: function(){
+						return getNowInvock(arguments[0]);
+					}
+				};
+			}();
+		</script>
+	</head>
+	<body>
+		<div class="box-container">
+			<h3>开奖时间：<i id="target_time"></i></h3>
+			<h3>还有：<i id="count_time"></i></h3>
+		</div>
 		
 		
+	<script type="text/javascript">
 		var mytime = '2020/12/26 11:51:01';
+		document.getElementById("target_time").innerHTML = mytime;
 		console.log("---- 开始 ----");
 		console.log('---- 目标时间: '+ mytime +'----');
+		
+		var show = document.getElementById("count_time");
 		CountDownClock.init({
 			time: mytime,
 			loop: function(time){
 				//console.log('##还有##  '+CountDownClock.getTime(time));
-				console.log('##还有##  '+this.formatTime(time));
+				var _t = this.formatTime(time);
+				console.log('##还有##  '+ _t);
+				show.innerHTML = _t;
 			},
 			finish: function(){
 				console.log('倒计时结束');
 			}
 		}).start();	
-		
-		
-		
-		</script>
-	</head>
-	<body>
+	</script>	
 	</body>
 </html>
